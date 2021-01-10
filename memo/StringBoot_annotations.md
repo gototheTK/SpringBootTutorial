@@ -1,16 +1,8 @@
-# Building a RESTful Web Service
+# Annotations
+
 ## Create a Resource Controller
 
 In Spring’s approach to building RESTful web services, HTTP requests are handled by a controller. These components are identified by the @RestController annotation, and the GreetingController shown in the following listing (from src/main/java/com/example/restservice/GreetingController.java) handles GET requests for /greeting by returning a new instance of the Greeting class:
-
-    package com.example.restservice;
-
-    import java.util.concurrent.atomic.AtomicLong;
-
-    import org.springframework.web.bind.annotation.GetMapping;
-    import org.springframework.web.bind.annotation.RequestParam;
-    import org.springframework.web.bind.annotation.RestController;
-
 
         @RestController
         public class GreetingController {
@@ -57,3 +49,16 @@ The Greeting object must be converted to JSON. Thanks to Spring’s HTTP message
     com/example package, letting it find the controllers.
 
 The main() method uses Spring Boot’s SpringApplication.run() method to launch an application. Did you notice that there was not a single line of XML? There is no web.xml file, either. This web application is 100% pure Java and you did not have to deal with configuring any plumbing or infrastructure.
+
+
+# Consuming a RESTful Web Service
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public class Quote {
+
+    private String type;
+    private Value value;
+
+This simple Java class has a handful of properties and matching getter methods. It is annotated with @JsonIgnoreProperties from the Jackson JSON processing library to indicate that any properties not bound in this type should be ignored.
+
+To directly bind your data to your custom types, you need to specify the variable name to be exactly the same as the key in the JSON document returned from the API. In case your variable name and key in JSON doc do not match, you can use @JsonProperty annotation to specify the exact key of the JSON document. (This example matches each variable name to a JSON key, so you do not need that annotation here.)
